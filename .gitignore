@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.exe
+*.log
+secret.tfvars
+.env
+.scriptc/
+examples/hello-linux
+examples/hello.exe
+examples/hello.ll
+examples/hello.pdb

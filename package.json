@@ -1,0 +1,15 @@
+{
+  "name": "opsc",
+  "version": "0.0.1",
+  "description": "Typed infrastructure scripting, compiled to a native binary.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"no tests yet\" && exit 0"
+  },
+  "keywords": ["typescript", "scriptc", "infrastructure", "ops", "cli"],
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@11.5.2"
+}
