@@ -1,7 +1,7 @@
 # opsc
 
 Typed infrastructure scripting, compiled to a native binary. No Node, no
-Python, no runtime on the target — the output of `opsc build` is a static
+Python, no runtime on the target: the output of `opsc build` is a static
 executable.
 
 `opsc` is a typed stdlib and CLI built on top of
@@ -13,12 +13,15 @@ Status: pre-v0.1.
 
 ## Toolchain setup
 
-Requires Node 24+ (for the scriptc compiler itself — binaries it produces
+Requires Node 24+ (for the scriptc compiler itself; binaries it produces
 need nothing).
 
 ```bash
 pnpm add -g scriptc
 ```
+
+If `scriptc --version` isn't found afterward, pnpm's global bin directory
+likely isn't on PATH yet. Run `pnpm setup` and restart your terminal.
 
 ### Windows / Linux hosts need Zig
 
@@ -35,11 +38,22 @@ winget install -e --id zig.zig
 already-open shell won't see it until restarted. If `zig version` still
 says "not found" right after installing, open a new terminal.
 
-Every scriptc invocation then needs:
+Every scriptc invocation then needs `SCRIPTC_CC=zigcc` set:
 
 ```bash
+# bash / Git Bash
 export SCRIPTC_CC=zigcc
+scriptc build examples/hello.ts -o examples/hello.exe
 ```
+
+```powershell
+# PowerShell
+$env:SCRIPTC_CC = "zigcc"
+scriptc build examples/hello.ts -o examples/hello.exe
+```
+
+Note PowerShell doesn't support bash's `VAR=val command` inline syntax:
+the env var has to be set on its own line (or `;`-separated) first.
 
 ### Cross-compiling to Linux
 
@@ -47,7 +61,14 @@ For a portable, dependency-free binary (CI runners, containers, minimal
 images), cross-compile to static musl Linux from any host:
 
 ```bash
+# bash / Git Bash
 SCRIPTC_CC=zigcc SCRIPTC_TARGET=x86_64-linux-musl scriptc build examples/hello.ts -o hello
+```
+
+```powershell
+# PowerShell
+$env:SCRIPTC_CC = "zigcc"; $env:SCRIPTC_TARGET = "x86_64-linux-musl"
+scriptc build examples/hello.ts -o hello
 ```
 
 This produces a statically-linked ELF binary with no libc dependency on
@@ -71,4 +92,4 @@ src/         opsc CLI and stdlib (env, fs, exec, http, zip)
 
 ## License
 
-Apache-2.0 — see [LICENSE](./LICENSE).
+Apache-2.0, see [LICENSE](./LICENSE).

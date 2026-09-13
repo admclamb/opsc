@@ -5,7 +5,5 @@ dist/
 secret.tfvars
 .env
 .scriptc/
-examples/hello-linux
-examples/hello.exe
-examples/hello.ll
-examples/hello.pdb
+*.ll
+*.pdb
