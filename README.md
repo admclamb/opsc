@@ -83,11 +83,41 @@ docker run --rm -v "$(pwd):/app" -w /app alpine:latest ./hello
 conversion (`the working directory 'C:/Program Files/Git/app' is invalid`)
 unless you prefix the command with `MSYS_NO_PATHCONV=1`.
 
+## Testing
+
+Two tiers, because scriptc's static compiler enforces rules plain Node
+never checks (see the `env.ts` design note above): a bug can pass every
+Node-side test and still fail to compile.
+
+**Fast tests, run under plain Node, no toolchain needed:**
+
+```bash
+pnpm test
+```
+
+Node 24 runs `.ts` files natively, so this needs no `ts-node`/`tsx`. It
+covers pure logic directly (`src/*.test.ts`) and spawns scripts as child
+processes to test exit codes and stderr for paths that call
+`process.exit` (`examples/*.test.ts`), since calling those directly
+would kill the test runner.
+
+**Compiled tests, build through scriptc and run the real binary:**
+
+```bash
+pnpm run test:scriptc
+```
+
+Slower, and needs `SCRIPTC_CC=zigcc` set (see Toolchain setup above),
+but this is the tier that actually exercises the compiler: it builds an
+example with `scriptc build` and asserts against the resulting binary's
+output and exit code, not against `node` running the source directly.
+
 ## Layout
 
 ```
 examples/    Worked examples, including the toolchain smoke test (hello.ts)
 src/         opsc CLI and stdlib (env, fs, exec, http, zip)
+test/        Compiled-binary smoke tests (scriptc-smoke.ts)
 ```
 
 ## License

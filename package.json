@@ -4,7 +4,9 @@
   "description": "Typed infrastructure scripting, compiled to a native binary.",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"no tests yet\" && exit 0"
+    "test": "node --test src/**/*.test.ts examples/**/*.test.ts",
+    "test:scriptc": "node test/scriptc-smoke.ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "typescript",
