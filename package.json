@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node --test src/**/*.test.ts examples/**/*.test.ts",
     "test:scriptc": "node test/scriptc-smoke.ts",
+    "test:all": "pnpm run typecheck && pnpm run test",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
