@@ -112,11 +112,23 @@ but this is the tier that actually exercises the compiler: it builds an
 example with `scriptc build` and asserts against the resulting binary's
 output and exit code, not against `node` running the source directly.
 
+## Stdlib notes
+
+**`promptText`/`promptSecret` (`src/prompt.ts`) require an explicit
+`closePrompts()` call once a script is done asking questions.** They read
+`process.stdin` through a background task that keeps the process alive
+on its own; piped/file input naturally hits EOF and ends it, but a real
+terminal's stdin never closes by itself, so without `closePrompts()` the
+process just hangs after printing its last line, it isn't stuck, it's
+still listening. Every script using either function should call
+`closePrompts()` right before it would otherwise exit. See
+`examples/multi-prompt-demo.ts` for the pattern.
+
 ## Layout
 
 ```
 examples/    Worked examples, including the toolchain smoke test (hello.ts)
-src/         opsc CLI and stdlib (env, fs, exec, http, zip)
+src/         opsc CLI and stdlib (env, fs, exec, http, zip, prompt)
 test/        Compiled-binary smoke tests (scriptc-smoke.ts)
 ```
 

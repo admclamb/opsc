@@ -2,7 +2,16 @@
   "name": "opsc",
   "version": "0.0.1",
   "description": "Typed infrastructure scripting, compiled to a native binary.",
-  "main": "index.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    "./env": "./src/env.ts",
+    "./fs": "./src/fs.ts",
+    "./zip": "./src/zip.ts",
+    "./http": "./src/http.ts",
+    "./exec": "./src/exec.ts",
+    "./prompt": "./src/prompt.ts"
+  },
   "scripts": {
     "test": "node --test src/**/*.test.ts examples/**/*.test.ts",
     "test:scriptc": "node test/scriptc-smoke.ts",
